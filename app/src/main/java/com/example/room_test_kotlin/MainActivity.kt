@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,21 +14,16 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel : MainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-
         viewModel.getAll().observe(this, Observer { todos ->
             result_text.text = todos.toString()
         })
 
         add_button.setOnClickListener{
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.insert(Todo(todo_edit.text.toString()))
-            }
+            viewModel.insert(Todo(todo_edit.text.toString()))
         }
 
         remove_button.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.deleteAll()
-            }
+            viewModel.deleteAll()
         }
     }
 }

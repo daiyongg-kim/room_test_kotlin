@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application){
     val db = Room.databaseBuilder(
@@ -17,11 +20,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun insert(todo: Todo) {
-        db.todoDao().insert(todo)
+        CoroutineScope(Dispatchers.IO).launch {
+            db.todoDao().insert(todo)
+        }
     }
 
     fun deleteAll() {
-        db.todoDao().deleteAll()
+        CoroutineScope(Dispatchers.IO).launch {
+            db.todoDao().deleteAll()
+        }
     }
 
 }
